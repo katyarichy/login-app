@@ -25,3 +25,14 @@ body {
     text-wrap: balance;
   }
 }
+
+/* pagination */
+@media (max-width: 600px) {
+  .ag-theme-alpine .ag-paging-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90px;
+    gap: 4px;
+  }
+}
