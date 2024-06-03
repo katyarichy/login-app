@@ -10,6 +10,10 @@ const Dashboard = () => {
   const [data, setData] = useState<any[]>([]);
   const [role, setRole] = useState<string | null>(null);
 
+  const parseDate = (date: any) => {
+    return new Date(date.value).toLocaleDateString('en-GB');
+  };
+
   const getColumnDefs = () => {
     let columns = [
       { headerName: 'Item', field: 'ItemCode', flex: 1, minWidth: 100 },
@@ -19,7 +23,13 @@ const Dashboard = () => {
         flex: 1,
         minWidth: 150,
       },
-      { headerName: 'Created', field: 'Created', flex: 1, minWidth: 100 },
+      {
+        headerName: 'Created',
+        field: 'Created',
+        flex: 1,
+        minWidth: 100,
+        valueFormatter: parseDate,
+      },
     ];
 
     if (role === 'Administrator') {
