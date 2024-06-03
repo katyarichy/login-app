@@ -4,7 +4,16 @@ import { NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
 
-  if (!token) {
+  const pathname = request.nextUrl.pathname;
+  if (pathname.startsWith('/_next') || pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
+
+  if (!token && pathname !== '/login') {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (!['/login', '/dashboard', '/'].includes(pathname)) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -12,5 +21,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: '/:path*',
 };
