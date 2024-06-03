@@ -2,27 +2,46 @@
 
 import React, { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import Cookies from 'js-cookie';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 const Dashboard = () => {
   const [data, setData] = useState<any[]>([]);
-  const columnDefs = [
-    {
-      headerName: 'Catalog Description',
-      field: 'CatalogDescription',
-      flex: 1,
-      minWidth: 150,
-    },
-    { headerName: 'Item Code', field: 'ItemCode', flex: 1, minWidth: 100 },
-    { headerName: 'Sales Price', field: 'SalesPrice', flex: 1, minWidth: 100 },
-    {
-      headerName: 'Stock',
-      field: 'LastAvailableStock',
-      flex: 1,
-      minWidth: 100,
-    },
-  ];
+  const [role, setRole] = useState<string | null>(null);
+
+  const getColumnDefs = () => {
+    let columns = [
+      { headerName: 'Item', field: 'ItemCode', flex: 1, minWidth: 100 },
+      {
+        headerName: 'Description',
+        field: 'CatalogDescription',
+        flex: 1,
+        minWidth: 150,
+      },
+      { headerName: 'Created', field: 'Created', flex: 1, minWidth: 100 },
+    ];
+
+    if (role === 'Administrator') {
+      columns = [
+        ...columns,
+        {
+          headerName: 'Stock',
+          field: 'LastAvailableStock',
+          flex: 1,
+          minWidth: 100,
+        },
+        {
+          headerName: 'Sales Price',
+          field: 'SalesPrice',
+          flex: 1,
+          minWidth: 100,
+        },
+      ];
+    }
+
+    return columns;
+  };
 
   const [paginationPageSize] = useState(30);
   const [paginationPageSizeOptions] = useState([30, 60, 90]);
@@ -42,6 +61,9 @@ const Dashboard = () => {
       }
     };
 
+    const userRole = Cookies.get('role') ?? null;
+    setRole(userRole);
+
     fetchData();
   }, []);
 
@@ -53,7 +75,7 @@ const Dashboard = () => {
       >
         <AgGridReact
           rowData={data}
-          columnDefs={columnDefs}
+          columnDefs={getColumnDefs()}
           pagination={true}
           paginationPageSize={paginationPageSize}
           paginationPageSizeSelector={paginationPageSizeOptions}
