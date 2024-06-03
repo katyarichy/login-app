@@ -53,8 +53,8 @@ const Dashboard = () => {
     return columns;
   };
 
-  const [paginationPageSize] = useState(30);
-  const [paginationPageSizeOptions] = useState([30, 60, 90]);
+  const paginationPageSize = 30;
+  const paginationPageSizeOptions = [30, 60, 90];
 
   useEffect(() => {
     const fetchData = async () => {
