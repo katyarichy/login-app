@@ -10,10 +10,10 @@ const Dashboard = () => {
       try {
         const response = await fetch('/api/data');
         const result = await response.json();
-        if (result.data.ArrayOfItem && result.data.ArrayOfItem.Item) {
-          setData(result.data.ArrayOfItem.Item);
+        if (result?.ArrayOfItem?.Item) {
+          setData(result.ArrayOfItem.Item);
         } else {
-          console.error('Invalid data structure', result.data);
+          console.error('Invalid data structure', result);
         }
       } catch (error) {
         console.error('Error fetching data', error);
